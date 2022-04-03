@@ -94,7 +94,7 @@ hour = int(datetime.datetime.now().strftime("%H"))
 already_tweeted = False
 while True:
     print(datetime.datetime.now().strftime("%d/%m/%y %H:%M:%S")+", already_tweeted="+str(already_tweeted)+", hour="+str(hour))
-    if hour != int(datetime.datetime.now().strftime("%H")) and hour == 0 and already_tweeted == False:
+    if hour == 0 and already_tweeted == False:
         result = run()
         hour = int(datetime.datetime.now().strftime("%H"))
         already_tweeted = True
