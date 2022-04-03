@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.9
+
 from util.env_reader import read_env
 from v3 import probability
 from v3 import visual_utilities
@@ -24,6 +26,9 @@ def run():
     except IndexError:
         exit()
 
+    with open("./data/valid_words.txt", "r") as v_w:
+        valid_words = v_w.read().split("\n")
+    
     guesses = []
     initial_guess = "tares"
     guesses.append(wordle_tools.calculate_pattern_from_guess(initial_guess, word))
@@ -61,7 +66,7 @@ def run():
     with open("./data/didnt_solve_lines.txt", "r") as d_s_l:
         didnt_solve_lines = d_s_l.read().split("\n")
 
-    if "X" in wordle:
+    if "X" in wordle or sum(wordle_tools.get_pattern_from_results(guesses[len(guesses)-1])) != 10:
         line = didnt_solve_lines[random.randint(0, len(didnt_solve_lines) - 1)]
     else:
         line = solved_lines[random.randint(0, len(solved_lines) - 1)]
@@ -77,17 +82,20 @@ def run():
     api.update_status(status=tweet)
 
     print("\n\n------------------------\n\nNOT_TWEETED="+word+" (for verification)")
+    print(guesses)
 
     f = open("./last_solved_wordle.txt", "w")
     f.write(str(last_solved + 1))
     f.close()
+
+    return "".join(wordle_tools.get_word_from_results(guesses[len(guesses) - 1])) == word
 
 hour = int(datetime.datetime.now().strftime("%H"))
 already_tweeted = False
 while True:
     print(datetime.datetime.now().strftime("%d/%m/%y %H:%M:%S")+", already_tweeted="+str(already_tweeted)+", hour="+str(hour))
     if hour != int(datetime.datetime.now().strftime("%H")) and hour == 0 and already_tweeted == False:
-        run()
+        result = run()
         hour = int(datetime.datetime.now().strftime("%H"))
         already_tweeted = True
     elif hour != int(datetime.datetime.now().strftime("%H")) and hour == 23:
