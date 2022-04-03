@@ -1,4 +1,3 @@
-from numpy import char
 from v3 import wordle_tools
 
 def words_with_chars_at_pos(words: list[str], guesses: list[list[tuple]]) -> list[str]:
