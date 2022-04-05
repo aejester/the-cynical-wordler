@@ -57,7 +57,7 @@ def run():
 
         words = word_filters.master_filter(words, guesses)
 
-    wordle = "Wordle "+str(last_solved + 1)+" "+str(len(guesses) if len(guesses) <= 6 else "X")+"/6*\n\n"+visual_utilities.build_wordle_grid(guesses)
+    wordle = "Wordle "+str(last_solved + 1)+" "+str(len(guesses) if sum(wordle_tools.get_pattern_from_results(guesses[len(guesses)-1])) != 10 else "X")+"/6*\n\n"+visual_utilities.build_wordle_grid(guesses)
     line = ""
 
     with open("./data/solved_lines.txt", "r") as s_l:
